@@ -10,7 +10,7 @@ const server = http.createServer(app);
 // CORS configuration for both HTTP and WebSocket
 const io = socketIo(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Use env variable for frontend origin
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Use env variable for frontend origin (local dev fallback)
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     transports: ['polling', 'websocket'], // Allow both transports
@@ -19,7 +19,7 @@ const io = socketIo(server, {
 
 // Use the CORS middleware for regular HTTP requests
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Use env variable for frontend origin
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Use env variable for frontend origin (local dev fallback)
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));
@@ -42,8 +42,8 @@ io.on('connection', (socket) => {
   });
 });
 
-// Set the server to listen on the port provided by Render (or fallback to 4000)
-const PORT = process.env.PORT || 4000;
+// Set the server to listen on the port provided by Render (or fallback to 4000 for local development)
+const PORT = process.env.PORT || 4000; // Render provides PORT as an environment variable, local dev fallback is 4000
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
