@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 
+// Get the backend URL from environment variables or default to localhost
+const backendUrl = process.env.REACT_APP_BACKEND_URL || 'http://localhost:4000';
+
 // Initialize connection to the backend
-const socket = io('http://localhost:4000');
+const socket = io(backendUrl);
 
 function App() {
   const [message, setMessage] = useState('');
@@ -13,6 +16,11 @@ function App() {
     socket.on('chat message', (msg) => {
       setMessages((prevMessages) => [...prevMessages, msg]);
     });
+
+    // Cleanup on component unmount
+    return () => {
+      socket.off('chat message');
+    };
   }, []);
 
   const handleSubmit = (e) => {

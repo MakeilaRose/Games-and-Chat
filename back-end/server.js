@@ -2,6 +2,7 @@ const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');  // CORS middleware
+require('dotenv').config(); // Load environment variables from .env file
 
 const app = express();
 const server = http.createServer(app);
@@ -9,7 +10,7 @@ const server = http.createServer(app);
 // CORS configuration for both HTTP and WebSocket
 const io = socketIo(server, {
   cors: {
-    origin: 'http://localhost:3000',  // Frontend origin for local development
+    origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Use env variable for frontend origin
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     transports: ['polling', 'websocket'], // Allow both transports
@@ -18,8 +19,7 @@ const io = socketIo(server, {
 
 // Use the CORS middleware for regular HTTP requests
 app.use(cors({
-  origin: 'https://games-and-chat.onrender.com/',  // Frontend origin for prod development
-  //origin: 'http://localhost:3000',  // Frontend origin for local development
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',  // Use env variable for frontend origin
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
 }));
