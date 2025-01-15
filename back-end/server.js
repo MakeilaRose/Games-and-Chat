@@ -18,7 +18,7 @@ const io = socketIo(server, {
 
 // Use the CORS middleware for regular HTTP requests
 app.use(cors({
-  origin: 'https://games-and-chat.onrender.com/',  // Frontend origin for local development
+  origin: 'https://games-and-chat.onrender.com/',  // Frontend origin for prod development
   //origin: 'http://localhost:3000',  // Frontend origin for local development
   methods: ['GET', 'POST'],
   allowedHeaders: ['Content-Type'],
